@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+<style>
+    a, div, h3{
+        font-size: 150%;
+    }
+</style>
+<header>
+    <td><a href="/logout">Выход</a></td>
+</header>
+<h3>Информация о пользователе</h3>
+<hr/>
+<div th:text="@{ID: {id} (id=${user.getId()})}"></div>
+<div th:text="@{Имя: {name} (name=${user.getName()})}"></div>
+<div th:text="@{Никнейм: {nickname} (nickname=${user.getNickName()})}"></div>
+<div th:text="@{Место в рейтинге: {ladder} (ladder=${user.getLadder()})}"></div>
+<div th:text="@{Email: {email} (email=${user.getEmail()})}"></div>
+<hr/>
+</body>
+</html>

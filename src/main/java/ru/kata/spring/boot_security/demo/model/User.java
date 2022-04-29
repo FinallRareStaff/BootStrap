@@ -2,9 +2,13 @@ package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -13,28 +17,77 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, length = 150)
     private long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "salary", nullable = false)
-    private int salary;
+    @Column(name = "nickname", nullable = false, length = 50)
+    private String nickName;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "ladder", nullable = false, length = 50, unique = true)
+    private int ladder;
+
+    @Column(name = "email", nullable = false, length = 50)
     private String email;
+
+    @Column(name = "username", nullable = false, length = 50, unique = true)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
     public User() {
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "users_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private Set<Role> roles;
+    public User(UserSample userSample, RoleService roleService) {
+        id = userSample.getId();
+        name = userSample.getName();
+        nickName = userSample.getNickName();
+        ladder = userSample.getLadder();
+        email = userSample.getEmail();
+        username = userSample.getUsername();
+        password = userSample.getPassword();
+        roles = new HashSet<>();
+        for (Role role : roleService.getAllRoles()) {
+            if (userSample.getRoles().contains(role)) {
+                roles.add(role);
+            }
+        }
+    }
+
+    public void update(UserSample userSample, RoleService roleService) {
+        name = userSample.getName();
+        nickName = userSample.getNickName();
+        ladder = userSample.getLadder();
+        email = userSample.getEmail();
+        username = userSample.getUsername();
+        roles = new HashSet<>();
+        if (!userSample.getPassword().equals("")) {
+            password = userSample.getPassword();
+            password = new BCryptPasswordEncoder().encode(password);
+        }
+        for (Role role : roleService.getAllRoles()) {
+            if (userSample.getRoles().contains(role)) {
+                roles.add(role);
+            }
+        }
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     public long getId() {
         return id;
@@ -52,12 +105,20 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public int getSalary() {
-        return salary;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setSalary(int salary) {
-        this.salary = salary;
+    public void setNickName(String surname) {
+        this.nickName = surname;
+    }
+
+    public int getLadder() {
+        return ladder;
+    }
+
+    public void setLadder(int ladder) {
+        this.ladder = ladder;
     }
 
     public String getEmail() {
@@ -68,21 +129,34 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(name, user.name)
+                && Objects.equals(nickName, user.nickName)
+                && Objects.equals(ladder, user.ladder)
+                && Objects.equals(email, user.email);
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, nickName, ladder, email);
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    @Override
+    public String toString() {
+        return "Id = " + id +
+                "\nName = " + name +
+                "\nNickName = " + nickName +
+                "\nLadder = " + ladder +
+                "\nEmail = " + email;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return getRoles();
     }
 
     @Override
@@ -92,24 +166,24 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
-//Срок действия учетной записи не истек
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-//Учетная запись не заблокирована
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-//Срок действия учетных данных не истек
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-//Активен
+
     @Override
     public boolean isEnabled() {
         return true;

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All users</title>
+</head>
+<body>
+<style>
+    a, h3, th {
+        font-size: 150%;
+    }
+</style>
+<header>
+    <a href="/logout">Выйти</a>
+    <hr/>
+</header>
+<h3>Список пользователей</h3>
+<hr/>
+<table>
+    <tr>
+        <th style="background-color: darkgray">Порядковый номер</th>
+        <th style="background-color: darkgray">Имя</th>
+        <th style="background-color: darkgray">Никнейм</th>
+        <th style="background-color: darkgray">Место в рейтинге</th>
+        <th style="background-color: darkgray">Почта</th>
+        <th style="background-color: darkgray">Пароль</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <th style="background-color: silver" th:text="${user.getId()}">id</th>
+        <th style="background-color: silver"><a th:text="${user.getName()}"
+                                                th:href="@{/admin/users/{id} (id=${user.getId()})}">name</a></th>
+        <th style="background-color: silver" th:text="${user.getNickName()}">nickname</th>
+        <th style="background-color: silver" th:text="${user.getLadder()}">ladder</th>
+        <th style="background-color: silver" th:text="${user.getEmail()}">email</th>
+        <th style="background-color: silver" th:text="${user.getPassword()}">password</th>
+    </tr>
+</table>
+<hr/>
+<a href="/admin/users/new">Добавить нового пользователя</a>
+</body>
+</html>
