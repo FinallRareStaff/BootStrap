@@ -63,6 +63,8 @@
                             <th scope="col">Ladder</th>
                             <th scope="col">Email</th>
                             <th scope="col">Role</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -77,6 +79,12 @@
                                     <span th:if="${role} == 'ROLE_ADMIN'">ADMIN</span>
                                     <span th:if="${role} == 'ROLE_USER'">USER</span>
                                 </span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-info">Edit</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger">Delete</button>
                             </td>
                         </tr>
                         </tbody>
