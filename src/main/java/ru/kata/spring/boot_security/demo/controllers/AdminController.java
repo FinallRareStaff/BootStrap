@@ -10,6 +10,8 @@ import ru.kata.spring.boot_security.demo.model.UserSample;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/admin/users")
 public class AdminController {
@@ -25,15 +27,13 @@ public class AdminController {
     @GetMapping()
     public String index(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("sampleUser", new UserSample());
         model.addAttribute("user", userService.findByUserName(authentication.getName()));
-        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("users", userService.getAllUsers()
+                .stream()
+                .map(u -> new UserSample(u))
+                .collect(Collectors.toList()));
         return "admin/user_table";
-    }
-
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "admin/user";
     }
 
     @GetMapping("/new")
@@ -46,13 +46,6 @@ public class AdminController {
     public String createUser(@ModelAttribute("user") UserSample user) {
         userService.add(new User(user, roleService));
         return "redirect:/admin/users";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String createUser(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user",
-                new UserSample(userService.getUserById(id)));
-        return "admin/user_edit";
     }
 
     @PatchMapping("/{id}")
