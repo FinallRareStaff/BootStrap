@@ -8,6 +8,7 @@
     <title>Admin panel</title>
 </head>
 <body>
+<!--Create HEAD-->
 <header class="p-3 bg-dark text-white">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -27,8 +28,10 @@
         </div>
     </div>
 </header>
+<!--Create body-->
 <div class="container-fluid">
     <div class="row mt-4" style="height: 100vh;">
+<!--Create side panel with role info-->
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
@@ -41,8 +44,19 @@
                 </li>
             </ul>
         </div>
+<!--Create block with bullet list and table-->
         <div class="col-md-10" style="background-color: rgb(247,247,250);">
             <h1>Admin panel</h1>
+<!--Create bulleted list-->
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Users table</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/users/new">New User</a>
+                </li>
+            </ul>
+<!--Create Container with table-->
             <div class="container-fluid border rounded p-0">
                 <div class="m-2 mb-0"><h3>All users</h3></div>
                 <div class="m-0 p-4 border-top" style="background-color: white;">
@@ -55,25 +69,53 @@
                             <th scope="col">Ladder</th>
                             <th scope="col">Email</th>
                             <th scope="col">Role</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row" th:text="@{{id} (id=${user.getId()})}">ID</th>
-                            <td th:text="@{{name} (name=${user.getName()})}">Name</td>
-                            <td th:text="@{{nickname} (nickname=${user.getNickName()})}">NickName</td>
-                            <td th:text="@{{ladder} (ladder=${user.getLadder()})}">Ladder</td>
-                            <td th:text="@{{email} (email=${user.getEmail()})}">Email</td>
+                        <tr th:each="currentUser : ${users}">
+                            <th scope="row" th:text="@{{id} (id=${currentUser.getId()})}">ID</th>
+                            <td th:text="@{{name} (name=${currentUser.getName()})}">Name</td>
+                            <td th:text="@{{nickname} (nickname=${currentUser.getNickName()})}">NickName</td>
+                            <td th:text="@{{ladder} (ladder=${currentUser.getLadder()})}">Ladder</td>
+                            <td th:text="@{{email} (email=${currentUser.getEmail()})}">Email</td>
                             <td>
-                                <span th:each="role : ${user.getRoles()}">
-                                    <span th:if="${role.getRole()} == 'ROLE_ADMIN'">ADMIN</span>
-                                    <span th:if="${role.getRole()} == 'ROLE_USER'">USER</span>
+                                <span th:each="role : ${currentUser.roles}">
+                                    <span th:if="${role} == 'ROLE_ADMIN'">ADMIN</span>
+                                    <span th:if="${role} == 'ROLE_USER'">USER</span>
                                 </span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-info" data-toggle="modal" th:data-target="@{#editModal{id} (id=${currentUser.getId()})}">Edit</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="@{#deleteModal{id} (id=${currentUser.getId()})}">Delete</button>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Create modal window for Edit-->
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
