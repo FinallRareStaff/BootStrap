@@ -57,7 +57,7 @@ public class User implements UserDetails {
         password = userSample.getPassword();
         roles = new HashSet<>();
         for (Role role : roleService.getAllRoles()) {
-            if (userSample.getRoles().contains(role)) {
+            if (userSample.getRoles().contains(role.getRole())) {
                 roles.add(role);
             }
         }
@@ -75,7 +75,7 @@ public class User implements UserDetails {
             password = new BCryptPasswordEncoder().encode(password);
         }
         for (Role role : roleService.getAllRoles()) {
-            if (userSample.getRoles().contains(role)) {
+            if (userSample.getRoles().contains(role.getRole())) {
                 roles.add(role);
             }
         }

@@ -5,6 +5,7 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserSample {
 
@@ -18,7 +19,7 @@ public class UserSample {
     private String email;
     private String username;
     private String password;
-    private Set<Role> roles;
+    private Set<String> roles;
 
     public UserSample() {
         roles = new HashSet<>();
@@ -36,7 +37,7 @@ public class UserSample {
         this.roles = new HashSet<>();
         for (Role role : roleService.getAllRoles()) {
             if (roles.contains(role.getRole())) {
-                this.roles.add(role);
+                this.roles.add(role.getRole());
             }
         }
     }
@@ -49,7 +50,10 @@ public class UserSample {
         email = user.getEmail();
         username = user.getUsername();
         password = "";
-        roles = user.getRoles();
+        roles = user.getRoles()
+                .stream()
+                .map(r -> r.getRole())
+                .collect(Collectors.toSet());
     }
 
     public long getId() {
@@ -108,11 +112,22 @@ public class UserSample {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+        this.roles = roles
+                .stream()
+                .map(r -> r.getRole())
+                .collect(Collectors.toSet());
+    }
+
+    public boolean hasAdminRole() {
+        return roles.contains("ROLE_ADMIN");
+    }
+
+    public boolean hasUserRole() {
+        return roles.contains("ROLE_USER");
     }
 }
