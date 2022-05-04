@@ -68,6 +68,7 @@
                             <th scope="col">NickName</th>
                             <th scope="col">Ladder</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Username</th>
                             <th scope="col">Role</th>
                             <th scope="col">Edit</th>
                             <th scope="col">Delete</th>
@@ -80,6 +81,7 @@
                             <td th:text="@{{nickname} (nickname=${currentUser.getNickName()})}">NickName</td>
                             <td th:text="@{{ladder} (ladder=${currentUser.getLadder()})}">Ladder</td>
                             <td th:text="@{{email} (email=${currentUser.getEmail()})}">Email</td>
+                            <td th:text="@{{username} (username=${currentUser.getUsername()})}">Username</td>
                             <td>
                                 <span th:each="role : ${currentUser.roles}">
                                     <span th:if="${role} == 'ROLE_ADMIN'">ADMIN</span>
@@ -136,6 +138,11 @@
                             <label th:for="@{email{id} (id = ${currentUser.getId()})}"><b>Email</b></label>
                             <input type="email" class="form-control" th:id="@{email{id} (id = ${currentUser.getId()})}"
                                    placeholder="Email" name="email" th:value=${currentUser.email}>
+                        </div>
+                        <div class="form-group py-2">
+                            <label th:for="@{username{id} (id = ${currentUser.getId()})}"><b>Username</b></label>
+                            <input type="text" class="form-control" th:id="@{username{id} (id = ${currentUser.getId()})}"
+                                   placeholder="Username" name="username" th:value=${currentUser.username}>
                         </div>
                         <div class="form-group py-2">
                             <label th:for="@{password{id} (id = ${currentUser.getId()})}"><b>Password</b></label>
