@@ -14,13 +14,11 @@
 <div class="container-fluid">
     <div class="row mt-4" style="height: 100vh;">
         <!--Create side panel with role info-->
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-            <ul class="nav nav-pills flex-column mb-auto">
-                <span th:each="role : ${user.getRoles()}">
-                <li class="nav-item" th:if="${role.getRole()} == 'ROLE_ADMIN'">
-                    <a class="nav-link  active" href="#">Admin</a>
+        <div class="col-md-2 m-0 p-0">
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Admin</a>
                 </li>
-                </span>
                 <li class="nav-item">
                     <a class="nav-link" href="/user">User</a>
                 </li>
