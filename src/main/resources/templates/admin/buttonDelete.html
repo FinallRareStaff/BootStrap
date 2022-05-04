@@ -1,4 +1,4 @@
-<div th:fragment="modalWindowDelete">
+<div th:fragment="buttonDelete">
     <div th:each="currentUser : ${users}" class="modal fade" th:id="@{deleteModal{id} (id = ${currentUser.getId()})}"
          tabindex="-1" role="dialog" th:aria-labelledby="@{deleteModalLabel{id} (id = ${currentUser.getId()})}"
          aria-hidden="true">

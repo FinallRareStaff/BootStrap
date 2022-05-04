@@ -1,4 +1,4 @@
-<div th:fragment="modalWindowEdit">
+<div th:fragment="buttonEdit">
     <div th:each="currentUser : ${users}" class="modal fade" th:id="@{editModal{id} (id = ${currentUser.getId()})}"
          tabindex="-1" role="dialog" th:aria-labelledby="@{editModalLabel{id} (id = ${currentUser.getId()})}"
          aria-hidden="true">

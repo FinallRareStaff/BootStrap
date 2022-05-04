@@ -34,8 +34,8 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page">
                     <span th:each="role : ${user.getRoles()}">
-                        <span th:if="${role.getRole()} == 'ROLE_ADMIN'">ADMIN</span>
-                        <span th:if="${role.getRole()} == 'ROLE_USER'">USER</span>
+                        <span th:if="${role.getRole()} == 'ROLE_ADMIN'">Admin</span>
+                        <span th:if="${role.getRole()} == 'ROLE_USER'">User</span>
                     </span>
                     </a>
                 </li>
