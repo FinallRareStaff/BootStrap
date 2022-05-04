@@ -34,13 +34,13 @@
         <!--Create side panel with role info-->
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
             <ul class="nav nav-pills flex-column mb-auto">
+                <span th:each="role : ${user.getRoles()}">
+                <li class="nav-item" th:if="${role.getRole()} == 'ROLE_ADMIN'">
+                    <a class="nav-link  active" href="#">Admin</a>
+                </li>
+                </span>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page">
-                    <span th:each="role : ${user.getRoles()}">
-                        <span th:if="${role.getRole()} == 'ROLE_ADMIN'">ADMIN</span>
-                        <span th:if="${role.getRole()} == 'ROLE_USER'">USER</span>
-                    </span>
-                    </a>
+                    <a class="nav-link" href="/user">User</a>
                 </li>
             </ul>
         </div>
@@ -244,7 +244,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <input type="submit" class="btn btn-primary"
+                <input type="submit" class="btn btn-danger"
                        th:form="@{deleteUserSample{id} (id = ${currentUser.getId()})}" value="Delete">
             </div>
         </div>
