@@ -8,20 +8,7 @@
     <title>Admin panel</title>
 </head>
 <body>
-<header class="p-3 bg-dark text-white">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <div style="font-size: large">
-                    <span><strong>admin@.ru</strong> with roles: ADMIN</span>
-                </div>
-            </ul>
-            <div style="text-align: right">
-                <a style="color : slategray" href="/logout" class="nav-link px-2 text-secondary">Logout</a>
-            </div>
-        </div>
-    </div>
-</header>
+<header th:insert="user/header :: header"></header>
 <div class="container-fluid">
     <div class="row mt-4" style="height: 100vh;">
         <div class="col-md-2 m-0 p-0">
