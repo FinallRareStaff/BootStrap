@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface RoleDao {
     List<Role> getAllRoles();
-    void update(long id, Role role);
 }
